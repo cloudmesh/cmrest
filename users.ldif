@@ -1,0 +1,21 @@
+dn: cn=Gregor von Laszewski,ou=people,dc=mycloudmesh,dc=org
+objectClass: inetOrgPerson
+cn: Gregor von Laszewski
+sn: von Laszewski
+givenname: Gregor
+uid: gregor
+# the userpassword is set to the SHA1 of 'root'
+userPassword: {SSHA}REPLACEME
+mail: laszewski@gmail.com
+description: This is Gregor
+
+dn: cn=Fugang Wang,ou=people,dc=mycloudmesh,dc=org
+objectClass: inetOrgPerson
+cn: Fugang Wang
+sn: Wang
+givenname: Fugang
+uid: wang
+# the userpassword is set to the SHA1 of 'root'
+userPassword: {SSHA}REPLACEME
+mail: kevinwangfg@gmail.com
+description: This is Fugang
