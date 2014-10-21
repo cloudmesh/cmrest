@@ -32,10 +32,9 @@ ldapdelete -x -D "cn=Manager,dc=mycloudmesh,dc=org"  -W "cn=Fugang Wang,ou=peopl
 ldapsearch -D "cn=Manager,dc=mycloudmesh,dc=org" -W -b "dc=mycloudmesh,dc=org" -s sub "(objectclass=*)"
 
 
+python setup.py install
 
 python server/restapp.py
-
-
 
 python client/restcli.py
 

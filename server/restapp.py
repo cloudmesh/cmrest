@@ -10,7 +10,7 @@ import pprint
 from flask import Flask, render_template, redirect, request, Response, send_from_directory
 #import flask
 
-from cmauth import CMAuth, CMAuthOS, CMAuthLDAP, CMIdpNotSupportedError
+from cloudmesh_auth.cmauth import CMAuth, CMAuthOS, CMAuthLDAP, CMAuthBasic, CMIdpNotSupportedError
 
 from functools import wraps, update_wrapper
 
@@ -59,14 +59,18 @@ def fgauth_token(f):
                 idpendpoint = reqheaders['CM-Auth-Endpoint']
                 token = reqheaders['CM-Auth-Token']
 
-                if idptype in ('LDAP'):
+                if idptype in ('LDAP', 'BASIC'):
                     if idptype == 'LDAP':
                         authobj = CMAuth()
+                        authed = authobj.auth(idptype, idpendpoint, token)
+                    elif idptype == 'BASIC':
+                        authobj = CMAuthBasic()
                         authed = authobj.auth(idptype, idpendpoint, token)
                     if authed:
                         retstatus = 200
                     else:
-                        emsg = 'Invalid Token'    
+                        emsg = 'Invalid Token'
+                 
                 else:   
                     emsg = "Auth IDP not supported!"
                 if emsg != '':
