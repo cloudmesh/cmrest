@@ -69,15 +69,15 @@ class CMAuthOS(object):
 
 class CMAuthLDAP(object):
     def __init__(self):
-        self.host = 'REMOVED'
+        self.host = 'localhost' # just for testing replace with real location of LDAP host
         self.basedn = 'dc=futuregrid,dc=org'
         self.groupou = 'ou=Groups'
         self.tokenstore = CMTokenStoreRAM()
         
     def getToken(self, username, password):
-        userdn = "uid=" + username + ",ou=People,dc=futuregrid,dc=org"
+        userdn = "uid=" + username + ",ou=People," + self.basedn
         #print userdn
-        ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, os.path.expanduser("~/.futuregrid/FGLdapCacert.pem"))
+        ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, os.path.expanduser("~/.cloudmesh/FGLdapCacert.pem"))
         ldapconn = ldap.initialize("ldap://" + self.host)
         token = None
         print "Initializing the LDAP connection to server: "
@@ -124,7 +124,26 @@ class CMTokenStoreRAM(object):
         if token in self.tokens:
             msg = {'user': self.tokens[token]}
         return msg
+
+class CMAuthBasic(object):
+    def auth(self, idptype, idpendpoint, token):
+        #
+        # read username password from some configuration file and not
+        # hardcode as bellow
+        #
+        username = "fillmein"
+        password = "fillmein"
+        #
+        # use the above to do a simple username password
+        # change code bellow
+        ret = False
+        print "%s-%s-%s" % (idptype, idpendpoint, token)
+        if token=='dummytoken%correct':
+            ret = True
+        return ret
+
     
+        
 class CMAuth(object):
     def auth(self, idptype, idpendpoint, token):
         ret = False
