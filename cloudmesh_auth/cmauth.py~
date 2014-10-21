@@ -126,23 +126,28 @@ class CMTokenStoreRAM(object):
         return msg
 
 class CMAuthBasic(object):
-    def auth(self, idptype, idpendpoint, token):
+    USERNAME = "fillmein"
+    PASSWORD = "fillmein"
+    NOTSOSECRETTOKEN = "dummytoken%correct%basicauth"
+    
+    def __init__(self):
+        self.tokenstore = CMTokenStoreRAM()
+        
+    def getToken(self, username, password):
+        token = ''
         #
         # read username password from some configuration file and not
         # hardcode as bellow
         #
-        username = "fillmein"
-        password = "fillmein"
         #
         # use the above to do a simple username password
         # change code bellow
-        ret = False
-        print "%s-%s-%s" % (idptype, idpendpoint, token)
-        if token=='dummytoken%correct':
-            ret = True
-        return ret
-
-    
+        if username == CMAuthBasic.USERNAME and password == CMAuthBasic.PASSWORD:
+            token = ""
+        return token
+            
+    def auth(self, idptype, idpendpoint, token):
+        return token == CMAuthBasic.NOTSOSECRETTOKEN
         
 class CMAuth(object):
     def auth(self, idptype, idpendpoint, token):
@@ -157,7 +162,7 @@ class CMIdpNotSupportedError(Exception):
         self.expr = expr
         self.msg = msg
 
-if __name__ == '__main__':
+def test():
     cred = {'OS_AUTH_URL':'URL_REMOVED',
             'OS_PASSWORD': 'REMOVED',
             'OS_TENANT_NAME': 'fgXX',
@@ -184,4 +189,7 @@ if __name__ == '__main__':
     print fgtoken
     print fgldap.auth(fgtoken)
     print fgldap.auth('nonexisttoken')
+
+if __name__ == '__main__':
+    test()
     
